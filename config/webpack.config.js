@@ -248,7 +248,7 @@ module.exports = function(webpackEnv) {
       // We placed these paths second because we want `node_modules` to "win"
       // if there are any conflicts. This matches Node resolution mechanism.
       // https://github.com/facebook/create-react-app/issues/253
-      modules: ['node_modules'].concat(
+      modules: ['node_modules', 'bower_modules'].concat(
         // It is guaranteed to exist because we tweak it in `env.js`
         process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
       ),
@@ -323,6 +323,15 @@ module.exports = function(webpackEnv) {
                 limit: 10000,
                 name: 'static/media/[name].[hash:8].[ext]',
               },
+            },
+            {
+              test: /\.purs$/,
+              loader: 'purs-loader',
+              exclude: /node_modules/,
+              query: {
+                psc: 'psa',
+                src: ['bower_components/purescript-*/src/**/*.purs', 'src/**/*.purs']
+              }
             },
             // Process application JS with Babel.
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
@@ -502,6 +511,11 @@ module.exports = function(webpackEnv) {
             : undefined
         )
       ),
+      function () {
+        this.plugin('done', function (stats) {
+          process.stderr.write(stats.toString('errors-only'));
+        });
+      },
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       isEnvProduction &&
