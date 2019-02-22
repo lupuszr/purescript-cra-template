@@ -1,3 +1,20 @@
+This is a mixture of purescript and react app. The main idea is separation of presentation and business logic.
+
+## Getting started
+
+`yarn && cd ./src/ && bower install && cd ..`
+
+`yarn start`
+
+
+## TODO
+
+- [] Propagate purescript errors
+- [] FFI for all react hooks
+- [] Better examples
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
